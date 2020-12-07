@@ -6,18 +6,18 @@ João Ribeiro Pinto, Miguel V. Correia, and Jaime S. Cardoso
 joao.t.pinto@inesctec.pt
 
 ## Summary
-This repository contains the code used for our papers on the Secure Triplet Loss approach for biometric template security in end-to-end deep models. First, in (1), we proposed the In this work, we implemented the model proposed in Biometric systems store sensitive personal data that needs to be highly protected. However, state-of-the-art template protection schemes generally consist of separate processes, inspired by salting, hashing, or encryption, that limit the achievable performance. Moreover, these are inadequate to protect current state-of-the-art biometric models as these rely on end-to-end deep learning methods. After proposing the Secure Triplet Loss, focused on template cancelability, we now reformulate it to address the problem of template linkability. Evaluated on biometric verification with off-the-person electrocardiogram (ECG) and unconstrained face images, the proposed method proves successful in training secure biometric models from scratch and adapting a pretrained model to make it secure. The results show that this new formulation of the Secure Triplet Loss succeeds in optimizing end-to-end deep biometric models to verify template cancelability, non-linkability, and non-invertibility.
+This repository contains the code used for our papers on the Secure Triplet Loss approach for biometric template security in end-to-end deep models. In our first paper (1), we proposed the Secure Triplet Loss, based on the original Triplet Loss (2), as a way to achieve template cancelability in deep end-to-end models without separate encryption processes. Although we succeeded in our goal, the method presented the drawback of high template linkability. Hence, in our second paper (3), we reformulated the Secure Triplet Loss to address this problem, by adding a linkability-measuring component based on Kullback-Leibler Divergence or template distance statistics. We evaluated the method on biometric verification with ECG and face, and the proposed method proved successful in training secure biometric models from scratch and adapting a pretrained model to make it secure.
 
-If you want to know more about this, or if you use our code, check out our papers:    
+If you want to know more about this, or if you use our code, check out our papers:  
+  
 **J. R. Pinto, J. S. Cardoso, and M. V. Correia, "Secure Triplet Loss for End-to-End Deep Biometrics", in *8th International Workshop on Biometrics and Forensics (IWBF 2020),* 2020.**    
 [[bib]](https://github.com/jtrpinto/xECG/blob/master/citation_iwbf.bib)
+
 **J. R. Pinto, M. V. Correia, and J. S. Cardoso, "Secure Triplet Loss: Achieving Cancelability and Non-Linkability in End-to-End Deep Biometrics", in *IEEE Transactions on Biometrics, Behavior, and Identity Science,* 2020.**    
 [[bib]](https://github.com/jtrpinto/xECG/blob/master/citation_tbiom.bib)
 
 ## Description
-This repository includes the python scripts used to train, test, and interpret the models with PTB and UofTDB data. The *models* directory includes trained models with PTB, the *results* directory includes the test scores of each trained model, the *plots* directory includes explanation figures from the first two subjects of each database, and the *peak_locations* directory includes some annotations on the R-peaks of the first two subjects of each database and a script to label more.
-
-To ensure the PTB and UofTDB data is not redistributed, especially UofTDB, this repository includes limited trained models, test scores, and explanation plots. Nevertheless, anyone with access to the data and this code should be able to replicate our results exactly:
+This repository includes the python scripts used to train and test the models with both the original triplet loss and the proposed Secure Triplet Loss. It includes scripts prepared for both face and ECG biometric verification, which used, respectively, the YouTube Faces database (YTF) and the University of Toronto ECG Database (UofTDB). To ensure no data from YTF or UofTDB are redistributed here, this repository does not include trained models, scores, predictions, or any other data.Nevertheless, the scripts are prepared so that anyone with access to the databases should be able to replicate our results exactly:
 1. Use *prepare_data.py* to transform the raw databases in prepared data samples;
 2. Use *train_model_X.py* to train a model;
 3. Use *test_model_X.py* to obtain test predictions with the trained model;
