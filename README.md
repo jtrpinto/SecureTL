@@ -8,8 +8,10 @@ joao.t.pinto@inesctec.pt
 ## Summary
 This repository contains the code used for our papers on the Secure Triplet Loss approach for biometric template security in end-to-end deep models. In our first paper (1), we proposed the Secure Triplet Loss, based on the original Triplet Loss (2), as a way to achieve template cancelability in deep end-to-end models without separate encryption processes. Although we succeeded in our goal, the method presented the drawback of high template linkability. Hence, in our second paper (3), we reformulated the Secure Triplet Loss to address this problem, by adding a linkability-measuring component based on Kullback-Leibler Divergence or template distance statistics. We evaluated the method on biometric verification with ECG and face, and the proposed method proved successful in training secure biometric models from scratch and adapting a pretrained model to make it secure.
 
-If you want to know more about this, or if you use our code, check out our papers:    
+If you want to know more about this, or if you use our code, please read and cite these papers:    
+
 **J. R. Pinto, M. V. Correia, and J. S. Cardoso, "Secure Triplet Loss: Achieving Cancelability and Non-Linkability in End-to-End Deep Biometrics", in *IEEE Transactions on Biometrics, Behavior, and Identity Science,* 2021.**    
+
 **J. R. Pinto, J. S. Cardoso, and M. V. Correia, "Secure Triplet Loss for End-to-End Deep Biometrics", in *8th International Workshop on Biometrics and Forensics (IWBF 2020),* 2020.**    
 [[link]](https://ieeexplore.ieee.org/document/9107958) [[pdf]](https://jtrpinto.github.io/files/pdf/jpinto2020iwbf.pdf) [[bib]](https://jtrpinto.github.io/files/bibtex/jpinto2020iwbf1.bib)
 
