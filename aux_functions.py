@@ -11,12 +11,16 @@ IEEE Transactions on Biometrics, Behavior, and Identity Science
 joao.t.pinto@inesctec.pt  |  https://jtrpinto.github.io
 '''
 
+import matplotlib
+matplotlib.use('agg')   # Do not try to show any figures
+
 import os
 import cv2
 import warnings
 import numpy as np
 from PIL import Image
 from copy import deepcopy
+from matplotlib import pyplot as pl
 from sklearn.preprocessing import normalize
 
 
@@ -180,3 +184,176 @@ def prepare_for_dnn(X, y, z_score_normalise=True):
     X_cnn = X.reshape(X.shape + (1,))
     y_cnn = np.asarray(y, dtype='float')
     return X_cnn, y_cnn
+
+
+
+# AUXILIARY FUNCTIONS FOR PLOTTING RESULTS
+
+def cancelability_fmr_at_eer(canc_fmr, thresholds, eer_thr):
+    aux = np.abs(thresholds - eer_thr)
+    idx = np.argmin(aux)
+    if thresholds[idx] == eer_thr:
+        return canc_fmr[idx]
+    elif thresholds[idx] > eer_thr:
+        d_before = np.abs(thresholds[idx-1] - eer_thr)
+        d_after = np.abs(thresholds[idx] - eer_thr)
+        d_total = d_before + d_after
+        return d_before*canc_fmr[idx]/d_total + d_after*canc_fmr[idx-1]/d_total
+    elif thresholds[idx] < eer_thr:
+        d_before = np.abs(thresholds[idx] - eer_thr)
+        d_after = np.abs(thresholds[idx+1] - eer_thr)
+        d_total = d_before + d_after
+        return d_after*canc_fmr[idx]/d_total + d_before*canc_fmr[idx+1]/d_total
+
+
+def fnmr_at_fmr(fnmr, fmr, reference_fmr=0.01):
+    aux = np.abs(fmr - reference_fmr)
+    idx = np.argmin(aux)
+    if fmr[idx] == reference_fmr:
+        return fnmr[idx]
+    elif fmr[idx] > reference_fmr:
+        d_before = np.abs(fmr[idx-1] - reference_fmr)
+        d_after = np.abs(fmr[idx] - reference_fmr)
+        d_total = d_before + d_after
+        return d_before*fnmr[idx]/d_total + d_after*fnmr[idx-1]/d_total
+    elif fmr[idx] < reference_fmr:
+        d_before = np.abs(fmr[idx] - reference_fmr)
+        d_after = np.abs(fmr[idx+1] - reference_fmr)
+        d_total = d_before + d_after
+        return d_after*fnmr[idx]/d_total + d_before*fnmr[idx+1]/d_total
+
+
+def plot_perf_curves(results, title=None, figsize=[6.4, 4.0], savefile=None):    
+    pl.figure(figsize=figsize)
+    pl.plot(np.linspace(0, 1, len(results['roc'][1])), results['roc'][1], 'r-', label=r'$FNMR$')
+    pl.plot(np.linspace(0, 1, len(results['roc'][0])), results['roc'][0], 'b-', label=r'$FMR$')
+    pl.scatter(results['eer'][0], results['eer'][1], color='black', marker='o', label=r'$EER$')
+    pl.legend()
+    pl.xlabel(r'Threshold ($t$)')
+    pl.ylabel(r'Error Rate')
+    pl.xlim([-0.02, 1.02])
+    pl.ylim([-0.02, 1.02])
+    if title is not None:
+        pl.title(title)
+        print(title)
+        print('EER', results['eer'][1])
+        print('FNMR@0.1%FMR', fnmr_at_fmr(results['roc'][1], results['roc'][0], reference_fmr=0.001))
+        print('FNMR@1%FMR', fnmr_at_fmr(results['roc'][1], results['roc'][0], reference_fmr=0.01))
+        print()
+    pl.tight_layout()
+    pl.grid(which='both')
+    if savefile is not None:
+        pl.savefig(savefile)
+    else:
+        pl.show()
+    
+    
+def plot_perf_vs_canc_curves(results, smin=0, smax=1, title=None, figsize=[6.4, 4.0], savefile=None):
+    eer = results[0]
+    canc = results[1]
+    fmrc_eer = cancelability_fmr_at_eer(canc['roc'][0], canc['roc'][2], eer['eer'][0])
+    pl.figure(figsize=figsize)
+    pl.plot(np.linspace(smin, smax, len(eer['roc'][1])), eer['roc'][1], 'r-', label=r'$FNMR$')
+    pl.plot(np.linspace(smin, smax, len(eer['roc'][0])), eer['roc'][0], 'b-', label=r'$FMR_V$')
+    pl.plot(np.linspace(smin, smax, len(canc['roc'][0])), canc['roc'][0], 'g-', label=r'$FMR_C$')
+    pl.scatter(eer['eer'][0], eer['eer'][1], color='black', marker='o', label=r'$EER$')
+    pl.scatter(eer['eer'][0], fmrc_eer, color='green', marker='o', label=r'$FMR_C@EER$')
+    pl.legend()
+    pl.xlabel(r'Threshold ($t$)')
+    pl.ylabel(r'Error Rate')
+    pl.xlim([smin - 0.02, smax + 0.02])
+    pl.ylim([smin - 0.02, smax + 0.02])
+    if title is not None:
+        pl.title(title)
+        print(title)
+        print('EER', eer['eer'][1])
+        print('FNMR@0.1%FMR', fnmr_at_fmr(eer['roc'][1], eer['roc'][0], reference_fmr=0.001))
+        print('FNMR@1%FMR', fnmr_at_fmr(eer['roc'][1], eer['roc'][0], reference_fmr=0.01))
+        print('FMR_C@EER', fmrc_eer)
+    pl.tight_layout()
+    pl.grid(which='both')
+    if savefile is not None:
+        pl.savefig(savefile)
+    else:
+        pl.show()
+
+
+def plot_dsys(results, smin=0, smax=1, title=None, figsize=[6.4, 4.0], savefile=None):
+    d_s = results[2][1]
+    p_sHm = results[2][2]
+    p_sHnm = results[2][3]
+    N = len(d_s)
+    fig = pl.figure(figsize=figsize)
+    if title is not None:
+        pl.title(title)
+        print('d_sys', results[2][0])
+        print()
+    ax = fig.add_subplot()
+    ax.set_xlabel(r'Distance score ($d$)')
+    ax.set_xlim([smin-0.02, smax+0.02])
+    ax.set_ylabel(r'Probability density ($p$)')
+    max_y = max(np.max(p_sHm), np.max(p_sHnm))
+    ax.set_ylim([-0.02*max_y, 1.02*max_y])
+    c1 = ax.plot(np.linspace(smin, smax, num=N), p_sHm, 'g', label=r'$p(d|H_{m})$')
+    c2 = ax.plot(np.linspace(smin, smax, num=N), p_sHnm, 'r', label=r'$p(d|H_{nm})$')
+    ax.tick_params(axis='y')
+    ax2 = ax.twinx()  # instantiate a second axes that shares the same x-axis
+    ax2.set_ylabel(r'$D_{\leftrightarrow}(d)$')
+    ax2.set_ylim([-0.02, 1.02])
+    c3 = ax2.plot(np.linspace(smin, smax, num=N), d_s, 'b', label=r'$D_\leftrightarrow(d)$')
+    ax2.tick_params(axis='y')
+    lns = c1 + c2 + c3
+    labs = [l.get_label() for l in lns]
+    ax.legend(lns, labs, loc=0)
+    fig.tight_layout()
+    if savefile is not None:
+        pl.savefig(savefile)
+    else:
+        pl.show()
+
+
+def plot_roc(rocs, names, title=None, figsize=[6.4, 4.0], savefile=None):
+    fig = pl.figure(figsize=figsize)
+    ax = fig.add_subplot()
+    axins = ax.inset_axes([0.4, 0.35, 0.55, 0.55])
+    x1, x2, y1, y2 = 0.05, 0.25, 0.75, 0.95
+    axins.set_xlim(x1, x2)
+    axins.set_ylim(y1, y2)
+    for ii in range(len(rocs)):
+        ax.plot(rocs[ii][0], 1 - rocs[ii][1], label=names[ii])
+        axins.plot(rocs[ii][0], 1 - rocs[ii][1], label=names[ii])
+    pl.legend()
+    ax.set_xlabel(r'$FMR$')
+    ax.set_ylabel(r'$1-FNMR$')
+    ax.set_xlim([-0.02, 1.02])
+    ax.set_ylim([-0.02, 1.02])
+    axins.set_xticks([0.05, 0.10, 0.15, 0.20, 0.25])
+    axins.set_yticks([0.75, 0.80, 0.85, 0.90, 0.95])
+    ax.indicate_inset_zoom(axins)
+    if title is not None:
+        pl.title(title)
+    fig.tight_layout()    
+    if savefile is not None:
+        pl.savefig(savefile)
+    else:
+        pl.show()
+
+def plot_det(rocs, names, title=None, figsize=[6.4, 4.0], savefile=None):
+    fig = pl.figure(figsize=figsize)
+    ax = fig.add_subplot()
+    for ii in range(len(rocs)):
+        ax.loglog(rocs[ii][0], rocs[ii][1], label=names[ii])
+        #axins.loglog(rocs[ii][0], rocs[ii][1], label=names[ii])
+    pl.legend(loc='lower left')
+    pl.grid(which='both', alpha=0.3)
+    ax.set_xlabel(r'$FMR$')
+    ax.set_ylabel(r'$FNMR$')
+    ax.set_xlim([0.001, 1.0])
+    ax.set_ylim([0.001, 1.0])
+    if title is not None:
+        pl.title(title)
+    fig.tight_layout()    
+    if savefile is not None:
+        pl.savefig(savefile)
+    else:
+        pl.show()
