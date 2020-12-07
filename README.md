@@ -10,19 +10,16 @@ This repository contains the code used for our papers on the Secure Triplet Loss
 
 If you want to know more about this, or if you use our code, check out our papers:  
 
-**J. R. Pinto, J. S. Cardoso, and M. V. Correia, "Secure Triplet Loss for End-to-End Deep Biometrics", in *8th International Workshop on Biometrics and Forensics (IWBF 2020),* 2020.**    
-[[link]](https://ieeexplore.ieee.org/document/9107958) [[pdf]](https://jtrpinto.github.io/files/pdf/jpinto2020iwbf.pdf) [[bib]](https://jtrpinto.github.io/files/bibtex/jpinto2020iwbf1.bib)
-
 **J. R. Pinto, M. V. Correia, and J. S. Cardoso, "Secure Triplet Loss: Achieving Cancelability and Non-Linkability in End-to-End Deep Biometrics", in *IEEE Transactions on Biometrics, Behavior, and Identity Science,* 2020.**    
 [[bib]](https://github.com/jtrpinto/xECG/blob/master/citation_tbiom.bib)
 
+**J. R. Pinto, J. S. Cardoso, and M. V. Correia, "Secure Triplet Loss for End-to-End Deep Biometrics", in *8th International Workshop on Biometrics and Forensics (IWBF 2020),* 2020.**    
+[[link]](https://ieeexplore.ieee.org/document/9107958) [[pdf]](https://jtrpinto.github.io/files/pdf/jpinto2020iwbf.pdf) [[bib]](https://jtrpinto.github.io/files/bibtex/jpinto2020iwbf1.bib)
+
 ## Description
 This repository includes the python scripts used to train and test the models with both the original triplet loss and the proposed Secure Triplet Loss. It includes scripts prepared for both face and ECG biometric verification, which used, respectively, the YouTube Faces database (YTF) and the University of Toronto ECG Database (UofTDB). To ensure no data from YTF or UofTDB are redistributed here, this repository does not include trained models, scores, predictions, or any other data.Nevertheless, the scripts are prepared so that anyone with access to the databases should be able to replicate our results exactly:
-1. Use *prepare_data.py* to transform the raw databases in prepared data samples;
-2. Use *train_model_X.py* to train a model;
-3. Use *test_model_X.py* to obtain test predictions with the trained model;
-4. Use *interpret_X.py* to compute explanations using the interpretability tools;
-5. Use *get_plots.py* to generate explanation plots of the signals.
+1. Use *face_prepare_ytfdb.py* or *ecg_prepare_uoftdb.py* to prepare the face or ECG databases;
+2. Use *[trait]_train_triplet_model.py*
 
 Do not forget to set the needed variables at the beginning of each script.
 
