@@ -20,7 +20,6 @@ import aux_functions as af
 DIR = 'original_directory'           # YTF Aligned-Images directory
 SAVE_DIR = 'destination_directory'   # Where to save the prepared images
 
-
 np.random.seed(42)  # Ensuring the same datasets everytime
 
 train_identities = np.array(sorted(os.listdir(DIR))[0:500])   # Using first 500 identities for training
