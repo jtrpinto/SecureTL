@@ -30,7 +30,7 @@ This repository includes the python scripts used to train and test the models wi
 ## Setup
 To run our code, download or clone this repository and use *requirements.txt* to set up a pip virtual environment with the needed dependencies.
 
-You will also need the data from the YTF and UofTDB databases. The YTF can be requested on the [YouTube Faces DB website](https://www.cs.tau.ac.il/~wolf/ytfaces/). To get the UofTDB data, you should contact the [BioSec.Lab at the University of Toronto](https://www.comm.utoronto.ca/~biometrics/). 
+You will also need the data from the YTF and UofTDB databases. The YTF aligned-images dataset can be requested on the [YouTube Faces DB website](https://www.cs.tau.ac.il/~wolf/ytfaces/). To get the UofTDB data, you should contact the [BioSec.Lab at the University of Toronto](https://www.comm.utoronto.ca/~biometrics/). 
 
 ## Acknowledgements
 This work was financed by the ERDF - European Regional Development Fund through the Operational Programme for Competitiveness and Internationalization - COMPETE 2020 Programme and by National Funds through the Portuguese funding agency, FCT - Fundação para a Ciência e a Tecnologia within project "POCI-01-0145-FEDER-030707", and within the PhD grant "SFRH/BD/137720/2018". The authors wish to acknowledge the creators of the UofTDB (University of Toronto, Canada), and the YouTube Faces (Tel Aviv University, Israel) databases, essential for this work.
