@@ -2,7 +2,8 @@
 Secure Triplet Loss Project Repository (https://github.com/jtrpinto/SecureTL)
 
 File: aux_functions.py
-- Miscellaneous functions used to load and process face and ECG data.
+- Miscellaneous functions used to load and process face and ECG data, and to
+  compute and plot several performance and security metrics.
 
 "Secure Triplet Loss: Achieving Cancelability and Non-Linkability in End-to-End Deep Biometrics"
 João Ribeiro Pinto, Miguel V. Correia, and Jaime S. Cardoso
