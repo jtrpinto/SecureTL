@@ -105,7 +105,6 @@ def evaluate_triplet_model(model, data_loader, batch_size, device, debug=False, 
     if save_embeddings:
         with open('embeddings.pk', 'wb') as hf:
             pk.dump((yA, yP, yN), hf)
-        exit()
     positives = normalised_distance(yA, yP)
     negatives = normalised_distance(yA, yN)
     distances = np.array([positives, negatives])
