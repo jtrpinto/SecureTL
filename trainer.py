@@ -97,7 +97,6 @@ def train_triplet_model(model, loss_fn, optimizer, train_loader, n_epochs, batch
             valid_eer.append(v_eer)
             print('....valid loss: {:.4f} :: EER {:.4f}'.format(valid_loss.item(), v_eer))
 
-        # ATTENTION: CHANGES valid_loss FOR v_eer
         if best_valid_loss is None:
             best_valid_loss = v_eer
             torch.save(model.state_dict(), filename + '.pth')
@@ -217,7 +216,6 @@ def train_secure_triplet_model(model, loss_fn, optimizer, train_loader, n_epochs
             print('....valid loss: {:.4f} :: EER {:.4f} :: Canc_EER {:.4f} :: D_sys {:.4f}'.format(valid_loss.item(), v_eer, v_canc, v_dsys))
             
         # Saving best model and early stopping:
-        # ATTENTION: CHANGES valid_loss FOR v_eer    
         if best_valid_loss is None:
             best_valid_loss = v_eer
             torch.save(model.state_dict(), filename + '.pth')
