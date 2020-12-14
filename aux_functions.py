@@ -156,6 +156,26 @@ def extract_data(path, subjects, fs=200.0):
     return {'X_anchors': train_x, 'y_anchors': data_train_y, 'X_remaining': test_x, 'y_remaining': data_test_y}
 
 
+def random_triplets(X_anchor, y_anchor, X_remaining, y_remaining, size=1000):
+    ind = np.random.choice(range(len(X_anchor)), size=size, replace=True)
+    random_Xa = X_anchor[ind, :, :]  # Anchors
+    random_ya = y_anchor[ind]
+    random_Xp = np.zeros(random_Xa.shape)  # Positives
+    random_Xn = np.zeros(random_Xa.shape)  # Negatives
+
+    for ii in range(len(random_Xa)):
+        positive_indices = np.argwhere(y_remaining == random_ya[ii])
+        negative_indices = np.argwhere(y_remaining != random_ya[ii])
+
+        rand_p = positive_indices[np.random.randint(0, len(positive_indices))]
+        rand_n = negative_indices[np.random.randint(0, len(negative_indices))]
+
+        random_Xp[ii, :, :] = X_remaining[rand_p, :, :]
+        random_Xn[ii, :, :] = X_remaining[rand_n, :, :]
+
+    return random_Xa, random_Xp, random_Xn, random_ya
+
+
 def generate_keys(n_keys, key_length):
     keys = np.random.randint(0, high=2, size=(n_keys, key_length))
     keys = normalize(keys, norm='l2', axis=1)
