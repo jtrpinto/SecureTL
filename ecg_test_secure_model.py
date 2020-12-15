@@ -16,9 +16,9 @@ import os
 import torch
 import numpy as np
 import pickle as pk
-from models import SecureModel, SecureNetwork
+from models import SecureModel, SecureECGNetwork
 from losses import SecureTripletLoss
-from dataset import SecureDataset
+from dataset import SecureECGDataset
 from trainer import train_secure_triplet_model
 from torch.utils.data import DataLoader
 from eval import evaluate_secure_model
@@ -34,11 +34,11 @@ BATCH_SIZE = 32
 print('Testing model: ' + MODEL)
 
 # Preparing the dataset
-testset = SecureDataset(TEST_DATA)
+testset = SecureECGDataset(TEST_DATA)
 test_loader = DataLoader(testset, batch_size=BATCH_SIZE, shuffle=False, num_workers=4)
 
 # Creating the model
-network = SecureNetwork().to(DEVICE)
+network = SecureECGNetwork().to(DEVICE)
 model = SecureModel(network)
 
 # Loading saved weights
