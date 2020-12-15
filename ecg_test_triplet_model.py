@@ -32,11 +32,11 @@ BATCH_SIZE = 32
 print('Testing model: ' + MODEL)
 
 # Preparing the dataset
-testset = TripletDataset(TEST_DATA)
+testset = TripletECGDataset(TEST_DATA)
 test_loader = DataLoader(testset, batch_size=BATCH_SIZE, shuffle=False, num_workers=4)
 
 # Creating the model
-network = TripletNetwork().to(DEVICE)
+network = TripletECGNetwork().to(DEVICE)
 model = TripletModel(network)
 
 # Loading saved weights
