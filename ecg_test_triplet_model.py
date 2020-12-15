@@ -15,9 +15,9 @@ import os
 import torch
 import numpy as np
 import pickle as pk
-from models import TripletModel, TripletNetwork
+from models import TripletModel, TripletECGNetwork
 from losses import TripletLoss
-from dataset import TripletDataset
+from dataset import TripletECGDataset
 from torch.utils.data import DataLoader
 from eval import evaluate_triplet_model
 
