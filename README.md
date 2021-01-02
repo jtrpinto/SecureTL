@@ -11,7 +11,7 @@ This repository contains the code used for our papers on the Secure Triplet Loss
 If you want to know more about this, or if you use our code, please read and cite these papers:    
 
 **J. R. Pinto, M. V. Correia, and J. S. Cardoso, "Secure Triplet Loss: Achieving Cancelability and Non-Linkability in End-to-End Deep Biometrics", in *IEEE Transactions on Biometrics, Behavior, and Identity Science,* 2021. (in press)**    
-[[link]](https://ieeexplore.ieee.org/document/9302588) [[bib]](https://jtrpinto.github.io/files/bibtex/jpinto2021ieeetbiom.bib)    
+[[link]](https://ieeexplore.ieee.org/document/9302588) [[bib]](https://jtrpinto.github.io/files/bibtex/jpinto2021tbiom.bib)    
 
 **J. R. Pinto, J. S. Cardoso, and M. V. Correia, "Secure Triplet Loss for End-to-End Deep Biometrics", in *8th International Workshop on Biometrics and Forensics (IWBF 2020),* 2020.**    
 [[link]](https://ieeexplore.ieee.org/document/9107958) [[pdf]](https://jtrpinto.github.io/files/pdf/jpinto2020iwbf.pdf) [[bib]](https://jtrpinto.github.io/files/bibtex/jpinto2020iwbf1.bib)
